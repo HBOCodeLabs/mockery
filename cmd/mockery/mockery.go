@@ -7,9 +7,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/vektra/mockery/mockery"
 	"runtime/pprof"
 	"syscall"
+
+	"github.com/HBOCodeLabs/mockery/mockery"
 )
 
 const regexMetadataChars = "\\.+*?()|[]{}^$"
@@ -25,6 +26,7 @@ type Config struct {
 	fIP        bool
 	fTO        bool
 	fCase      string
+	fPkgPrefix bool
 	fNote      string
 	fProfile   string
 	fVersion   bool
@@ -94,6 +96,7 @@ func main() {
 
 	visitor := &mockery.GeneratorVisitor{
 		InPackage:   config.fIP,
+		PkgPrefix:   config.fPkgPrefix,
 		Note:        config.fNote,
 		Osp:         osp,
 		PackageName: config.fOutpkg,
@@ -129,6 +132,7 @@ func parseConfigFromArgs(args []string) Config {
 	flagSet.BoolVar(&config.fIP, "inpkg", false, "generate a mock that goes inside the original package")
 	flagSet.BoolVar(&config.fTO, "testonly", false, "generate a mock in a _test.go file")
 	flagSet.StringVar(&config.fCase, "case", "camel", "name the mocked file using casing convention")
+	flagSet.BoolVar(&config.fPkgPrefix, "pkgprefix", true, "use package name as prefix")
 	flagSet.StringVar(&config.fNote, "note", "", "comment to insert into prologue of each generated file")
 	flagSet.StringVar(&config.fProfile, "cpuprofile", "", "write cpu profile to file")
 	flagSet.BoolVar(&config.fVersion, "version", false, "prints the installed version of mockery")

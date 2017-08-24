@@ -88,6 +88,7 @@ func (this *Walker) doWalk(p *Parser, dir string, visitor WalkerVisitor) (genera
 
 type GeneratorVisitor struct {
 	InPackage bool
+	PkgPrefix bool
 	Note      string
 	Osp       OutputStreamProvider
 	// The name of the output package, if InPackage is false (defaults to "mocks")
@@ -111,6 +112,8 @@ func (this *GeneratorVisitor) VisitWalk(iface *Interface) error {
 		pkg = this.PackageName
 	}
 
+	gen := NewGenerator(iface, pkg, this.InPackage, this.PkgPrefix)
+
 	out, err, closer := this.Osp.GetWriter(iface, pkg)
 	if err != nil {
 		fmt.Printf("Unable to get writer for %s: %s", iface.Name, err)
@@ -118,7 +121,6 @@ func (this *GeneratorVisitor) VisitWalk(iface *Interface) error {
 	}
 	defer closer()
 
-	gen := NewGenerator(iface, pkg, this.InPackage)
 	gen.GeneratePrologueNote(this.Note)
 	gen.GeneratePrologue(pkg)
 

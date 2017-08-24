@@ -25,6 +25,7 @@ func (this *StdoutStreamProvider) GetWriter(iface *Interface, pkg string) (io.Wr
 type FileOutputStreamProvider struct {
 	BaseDir   string
 	InPackage bool
+	PkgPrefix bool
 	TestOnly  bool
 	Case      string
 }
@@ -32,7 +33,7 @@ type FileOutputStreamProvider struct {
 func (this *FileOutputStreamProvider) GetWriter(iface *Interface, pkg string) (io.Writer, error, Cleanup) {
 	var path string
 
-	caseName := iface.Name
+	caseName := iface.MockName
 	if this.Case == "underscore" {
 		caseName = this.underscoreCaseName(caseName)
 	}

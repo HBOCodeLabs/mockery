@@ -186,6 +186,7 @@ func (p *Parser) FindInPackage(name string, pkg *types.Package) *Interface {
 type Interface struct {
 	Name      string
 	Path      string
+	MockName  string
 	File      *ast.File
 	Pkg       *types.Package
 	Type      *types.Interface
