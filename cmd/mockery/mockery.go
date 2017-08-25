@@ -39,7 +39,6 @@ func main() {
 	var recursive bool
 	var filter *regexp.Regexp
 	var err error
-	var limitOne bool
 
 	if config.quiet {
 		// if "quiet" flag is set, set os.Stdout to /dev/null to suppress all output to Stdout
@@ -61,7 +60,6 @@ func main() {
 			}
 		} else {
 			filter = regexp.MustCompile(fmt.Sprintf("^%s$", config.fName))
-			limitOne = true
 		}
 	} else if config.fAll {
 		recursive = true
@@ -106,7 +104,7 @@ func main() {
 		BaseDir:   config.fDir,
 		Recursive: recursive,
 		Filter:    filter,
-		LimitOne:  limitOne,
+		LimitOne:  false,
 	}
 
 	generated := walker.Walk(visitor)
